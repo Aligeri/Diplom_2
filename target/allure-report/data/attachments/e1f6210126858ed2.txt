@@ -1,7 +1,0 @@
--------------------------------------------------------------------------------
-Test set: yandexPraktikum.CreateUserTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! - in yandexPraktikum.CreateUserTest
-initializationError(yandexPraktikum.CreateUserTest)  Time elapsed: 0.005 s  <<< ERROR!
-java.lang.Exception: No public static parameters method on class yandexPraktikum.CreateUserTest
-

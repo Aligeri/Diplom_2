@@ -57,23 +57,9 @@ public class CreateUserParametrizedTest {
         User user = new User(email, password, name);
 
         Response response = userRequest.createUserResponse(user);
-
         var statusCode = response.getStatusCode();
 
-        if (statusCode == SC_FORBIDDEN) {
-
-            response.then()
-                    .statusCode(SC_FORBIDDEN);
-
-            ResponseErrorMessage bodyResponseErrorMessage = response.body().as(ResponseErrorMessage.class);
-
-            Map<String, String> forbiddenRegisteredDataMap = new HashMap<>();
-            forbiddenRegisteredDataMap.put(SUCCESS, FALSE);
-            forbiddenRegisteredDataMap.put(MESSAGE, EMPTY_REQUIRED_FIELD);
-
-            Assert.assertEquals(INCORRECT_RESPONSE_BODY, forbiddenRegisteredDataMap.toString(), bodyResponseErrorMessage.toString());
-        }
-        else if (statusCode == SC_OK){
+        if (statusCode == SC_OK) {
             try {
                 accessToken = response.body().as(CreateUserResponse.class).getAccessToken();
                 userRequest.deleteUser(accessToken.substring(7));
@@ -81,8 +67,25 @@ public class CreateUserParametrizedTest {
                 System.out.println(DELETE_USER_ERROR);
             }
         }
-        else {
-            System.out.println(ERROR);
-        }
+
+        response.then()
+                .statusCode(SC_FORBIDDEN);
+
+        ResponseErrorMessage bodyResponseErrorMessage = response.body().as(ResponseErrorMessage.class);
+
+        Map<String, String> forbiddenRegisteredDataMap = new HashMap<>();
+        forbiddenRegisteredDataMap.put(SUCCESS, FALSE);
+        forbiddenRegisteredDataMap.put(MESSAGE, EMPTY_REQUIRED_FIELD);
+
+        Assert.assertEquals(INCORRECT_RESPONSE_BODY, forbiddenRegisteredDataMap.toString(), bodyResponseErrorMessage.toString());
+
+//        if (statusCode == SC_OK) {
+//            try {
+//                accessToken = response.body().as(CreateUserResponse.class).getAccessToken();
+//                userRequest.deleteUser(accessToken.substring(7));
+//            } catch (IllegalArgumentException e) {
+//                System.out.println(DELETE_USER_ERROR);
+//            }
+//        }
     }
 }
